@@ -63,27 +63,4 @@ const CardFooter = React.forwardRef<HTMLDivElement,React.HTMLAttributes<HTMLDivE
 ))
 CardFooter.displayName = "CardFooter"
 
-export interface CardComponentProps {
-  title: string;
-  description: string;
-  items?: React.ReactNode[];
-  footer: string;
-}
-const CardComponent = ({title, description, items, footer}: CardComponentProps) => {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
-      </CardHeader>
-      {items && items.map((item, index) => (
-        <CardContent key={index}>
-          {item}
-        </CardContent>
-      ))}
-      <CardFooter>{footer}</CardFooter>
-    </Card>
-  );
-}
-
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent, CardComponent }
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
