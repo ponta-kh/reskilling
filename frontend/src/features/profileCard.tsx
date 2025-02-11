@@ -7,9 +7,9 @@ export interface ProfileCardProps {
 }
 
 export default function ProfileCard(props: ProfileCardProps) {
-    const {address, tokenBalance, bankBalance} = props;
-    return (    
-        <Card className="w-96 m-auto">
+    const { address, tokenBalance, bankBalance } = props;
+    return (
+        <Card className="w-500 m-auto">
             <CardHeader>
                 <CardTitle>アカウント情報</CardTitle>
             </CardHeader>
