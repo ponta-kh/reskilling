@@ -72,6 +72,7 @@ export default function Home() {
             rare: false,
         };
         setNftItems((prev) => [...prev, newItem2]);
+        return;
         //一時的な記述ここまで
 
         if (!ethereum) {
