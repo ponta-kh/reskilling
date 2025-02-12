@@ -79,9 +79,10 @@ export default function Home() {
                 "ipfs://",
                 "https://ipfs.io/ipfs/"
             );
+            console.log(uri);
             const metadata = await fetch(uri).then((res) => res.json());
             const rare = metadata.attributes.some(
-                (attr: any) => attr.trait_type === "Smile" && attr.value > 49
+                (attr: any) => attr.trait_type === "Jump" && attr.value > 800
             );
             const nftItem = {
                 name: metadata.name,
