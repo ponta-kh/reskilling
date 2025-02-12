@@ -15,7 +15,7 @@ export default function DepositForm() {
     return (
         <Form action="" className="flex justify-center items-center gap-4 m-3">
             <Input type="text" name="depositVal" placeholder={`100`} />
-            <Button type="submit" variant="commit" disabled="">
+            <Button type="submit" variant="commit" disabled=false>
                 預入
             </Button>
         </Form>
