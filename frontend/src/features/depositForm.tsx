@@ -7,7 +7,7 @@ import Form from "next/form";
 export default function DepositForm() {
     const [_, formAction, isPending] = useActionState(async (_, data: FormData) => {
         await new Promise((resolve) => setTimeout(resolve, 1000));
-        console.log(data.get("depositVal"));
+        console.log("depositVal");
     }, null);
 
     return (
