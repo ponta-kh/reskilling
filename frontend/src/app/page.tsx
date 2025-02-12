@@ -41,40 +41,6 @@ export default function Home() {
         //型指定の方法がわからないので、anyで回避
         const { ethereum } = window as any;
 
-        //一時的な記述
-        setAddress("0x4b7be4F74807A7460E0EE092dd9a26F36FbcD024");
-        setTokenBalance("100");
-        setBankBalance("300");
-        setIsVip(true);
-        setNftItems([]);
-        const metadata = await fetch(
-            "https://ipfs.io/ipfs/bafybeigyod7ldrnytkzrw45gw2tjksdct6qaxnsc7jdihegpnk2kskpt7a/metadata2.json"
-        ).then((res) => res.json());
-        const newItem = {
-            name: metadata.name,
-            description: metadata.description,
-            tokenId: 1,
-            src: metadata.image.replace("ipfs://", "https://ipfs.io/ipfs/"),
-            alt: metadata.name,
-            rare: true,
-        };
-        setNftItems((prev) => [...prev, newItem]);
-
-        const metadata2 = await fetch(
-            "https://ipfs.io/ipfs/bafybeigyod7ldrnytkzrw45gw2tjksdct6qaxnsc7jdihegpnk2kskpt7a/metadata3.json"
-        ).then((res) => res.json());
-        const newItem2 = {
-            name: metadata2.name,
-            description: metadata2.description,
-            tokenId: 2,
-            src: metadata2.image.replace("ipfs://", "https://ipfs.io/ipfs/"),
-            alt: metadata2.name,
-            rare: false,
-        };
-        setNftItems((prev) => [...prev, newItem2]);
-        return;
-        //一時的な記述ここまで
-
         if (!ethereum) {
             alert("MetaMaskをインストールしてください！");
             return;
@@ -92,16 +58,16 @@ export default function Home() {
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
         const tokenBankContract = new ethers.Contract(
-            process.env.NEXT_PUBLIC_TOKEN_BANK_ADDRESS!,
+            "0x3b54000195e80461FA44eE64653021d99910344B",
             TokenBank.abi,
             signer
         );
-        setTokenBalance(await tokenBankContract.balanceOf(address).toNumber());
-        setBankBalance(await tokenBankContract.bankBalanceOf(address).toNumber());
-        setBankTotalDeposit(await tokenBankContract.bankTotalDeposit().toNumber());
+        setTokenBalance((await tokenBankContract.balanceOf(address)).toNumber());
+        setBankBalance((await tokenBankContract.bankBalanceOf(address)).toNumber());
+        setBankTotalDeposit((await tokenBankContract.bankTotalDeposit()).toNumber());
 
         const memberNFTContract = new ethers.Contract(
-            process.env.NEXT_PUBLIC_MEMBER_NFT_ADDRESS!,
+            "0x42573E5c506A56255883983f7C7e365B8aC69104",
             MemberNFT.abi,
             signer
         );
@@ -121,6 +87,7 @@ export default function Home() {
                 rare: true,
             };
             setNftItems((prev) => [...prev, nftItem]);
+            setIsVip(true);
         }
     };
 
