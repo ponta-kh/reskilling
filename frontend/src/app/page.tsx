@@ -57,13 +57,14 @@ export default function Home() {
         setAddress(accounts[0]);
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
+
         const tokenBankContract = new ethers.Contract(
             "0x3b54000195e80461FA44eE64653021d99910344B",
             TokenBank.abi,
             signer
         );
-        setTokenBalance((await tokenBankContract.balanceOf(address)).toNumber());
-        setBankBalance((await tokenBankContract.bankBalanceOf(address)).toNumber());
+        setTokenBalance((await tokenBankContract.balanceOf(accounts[0])).toNumber());
+        setBankBalance((await tokenBankContract.bankBalanceOf(accounts[0])).toNumber());
         setBankTotalDeposit((await tokenBankContract.bankTotalDeposit()).toNumber());
 
         const memberNFTContract = new ethers.Contract(
@@ -72,22 +73,28 @@ export default function Home() {
             signer
         );
 
-        for (let i = 0; i < (await memberNFTContract.balanceOf(address)); i++) {
-            const tokenId = await memberNFTContract.tokenOfOwnerByIndex(address, i);
-            const uri = await memberNFTContract
-                .tokenURI(tokenId)
-                .replace("ipfs://", "https://ipfs.io/ipfs/");
+        for (let i = 0; i < (await memberNFTContract.balanceOf(accounts[0])); i++) {
+            const tokenId = await memberNFTContract.tokenOfOwnerByIndex(accounts[0], i);
+            const uri = (await memberNFTContract.tokenURI(tokenId)).replace(
+                "ipfs://",
+                "https://ipfs.io/ipfs/"
+            );
             const metadata = await fetch(uri).then((res) => res.json());
+            const rare = metadata.attributes.some(
+                (attr: any) => attr.trait_type === "Smile" && attr.value > 49
+            );
             const nftItem = {
                 name: metadata.name,
                 description: metadata.description,
                 tokenId: tokenId.toNumber(),
                 src: metadata.image.replace("ipfs://", "https://ipfs.io/ipfs/"),
                 alt: metadata.name,
-                rare: true,
+                rare: rare,
             };
             setNftItems((prev) => [...prev, nftItem]);
-            setIsVip(true);
+            if (rare) {
+                setIsVip(true);
+            }
         }
     };
 
